@@ -104,14 +104,27 @@ public class VesselMovementBehaviour : MonoBehaviour
 
     // Get the wanted speed and rotation speed from the XR interaction script
 
-    public void GetWantedSpeed(float speed)
+    public void SetWantedSpeed(float handleValue)
     {
-        wantedSpeed = speed;
+        // Value between -1 0 and 1
+        // normalised to 0 and 1
+        // formula: (value - min) / (max - min)
+        // 0 = no speed
+        // 1 = max speed
+
+        handleValue = (handleValue + 1) / 2;
+        wantedSpeed = handleValue * maxSpeed;
+
     }
 
-    public void GetWantedRotationSpeed(float rotationSpeed)
+    public void SetWantedRotationSpeed(float rotationSpeed)
     {
-        wantedRotationSpeed = rotationSpeed;
+        // Value between 0 and 1
+        // 0 = max rotation speed to the left
+        // 1 = max rotation speed to the right
+        // 0.5 = no rotation
+
+        wantedRotationSpeed = -maxRotationSpeed + rotationSpeed * 2 * maxRotationSpeed;
     }
 
 }
