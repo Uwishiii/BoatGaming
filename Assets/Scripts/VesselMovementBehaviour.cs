@@ -28,13 +28,15 @@ public class VesselMovementBehaviour : MonoBehaviour
     [SerializeField]
     private float rotationDrag = 0.1f;
 
-
+    [SerializeField]
+    private ControlsUIBehaviour controlsUI;
 
     // Update is called once per frame
     void FixedUpdate()
     {
         ApplyDrag();
 
+        controlsUI.CalculateSpeed(speed);
 
         Accelerate(wantedSpeed);
         Rotate(wantedRotationSpeed);
