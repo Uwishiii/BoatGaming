@@ -4,25 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Slider = UnityEngine.UI.Slider;
+using UnityEngine.Events;
 
 public class IcebergDamage : MonoBehaviour
 {
+    [SerializeField]
+    private float maxHealth;
     [SerializeField] 
     private float health;
     [SerializeField] 
     private int damage;
     [SerializeField] 
     private int healthSpeed;
-    
-    [SerializeField] private GameObject healthUI;
+    [SerializeField] 
+    private GameObject healthUI;
+    [SerializeField]
+    private UnityEvent<float, float> onHealthChange; 
     
     void Start()
     {
-        healthUI.GetComponent<Slider>().value = 20;
-        health = 20f;
+        healthUI.GetComponent<Slider>().value = maxHealth;
+        health = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    private void TakeDamage(int damage)
     {
         health -= damage;
 
@@ -38,7 +43,14 @@ public class IcebergDamage : MonoBehaviour
         if (collision.gameObject.CompareTag("DamageBoat"))
         {
             TakeDamage(damage);
+            onHealthChange.Invoke(health, maxHealth);
             healthUI.GetComponent<Slider>().value = health;
         }
+    }
+
+    public void Repair()
+    {
+        health = maxHealth;
+        healthUI.GetComponent<Slider>().value = health;
     }
 }
