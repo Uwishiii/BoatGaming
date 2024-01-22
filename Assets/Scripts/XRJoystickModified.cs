@@ -129,6 +129,19 @@ namespace UnityEngine.XR.Content.Interaction
         /// </summary>
         public ValueChangeEvent onValueChangeY => m_OnValueChangeY;
 
+
+
+
+        #region Dylan's additions
+        [SerializeField]
+        private Vector3 xRotationAxis = Vector3.right;
+        [SerializeField]
+        private Vector3 yRotationAxis = Vector3.up;
+
+
+        #endregion
+
+
         void Start()
         {
             if (m_RecenterOnRelease)
@@ -270,12 +283,22 @@ namespace UnityEngine.XR.Content.Interaction
             if (m_Handle == null)
                 return;
 
-            var xComp = Mathf.Tan(angles.x * Mathf.Deg2Rad);
-            var zComp = Mathf.Tan(angles.y * Mathf.Deg2Rad);
-            var largerComp = Mathf.Max(Mathf.Abs(xComp), Mathf.Abs(zComp));
-            var yComp = Mathf.Sqrt(1.0f - largerComp * largerComp);
+            #region Dylan's changes
 
-            m_Handle.up = (transform.up * yComp) + (transform.right * xComp) + (transform.forward * zComp);
+            //var xComp = Mathf.Tan(angles.x * Mathf.Deg2Rad);
+            //var zComp = Mathf.Tan(angles.y * Mathf.Deg2Rad);
+            //var largerComp = Mathf.Max(Mathf.Abs(xComp), Mathf.Abs(zComp));
+            //var yComp = Mathf.Sqrt(1.0f - largerComp * largerComp);
+
+            //m_Handle.up = (transform.up * yComp) + (transform.right * xComp) + (transform.forward * zComp);
+
+            Vector3 xRotation = angles.x * xRotationAxis;
+            Vector3 yRotation = angles.y * yRotationAxis;
+
+            m_Handle.localRotation = Quaternion.Euler(xRotation + yRotation);
+
+            #endregion
+
         }
 
         void OnDrawGizmosSelected()
