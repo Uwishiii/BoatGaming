@@ -31,11 +31,11 @@ public class IcebergDamage : MonoBehaviour
     {
         health -= damage;
 
-        if (health <= 0f)
-        {
-            Destroy(gameObject);
-            Debug.Log("ded");
-        }
+        //if (health <= 0f)
+        //{
+        //    Destroy(gameObject);
+        //    Debug.Log("ded");
+        //}
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -53,4 +53,15 @@ public class IcebergDamage : MonoBehaviour
         health = maxHealth;
         healthUI.GetComponent<Slider>().value = health;
     }
+    #region Dylan T.'s Addition
+
+    // This is a Unity event that is called when the script is loaded or a value is changed in the inspector.
+    // This allows me to see the effects of the health on the speed.
+    private void OnValidate()
+    {
+        onHealthChange.Invoke(health, maxHealth);
+        
+    }
+    #endregion
+
 }

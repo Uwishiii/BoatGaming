@@ -19,10 +19,10 @@ public class VesselMovementBehaviour : MonoBehaviour
     private float rotationSpeed = 0f;
     [SerializeField]
     private float rotationAccelerationSpeed = 10.0f;
-    [SerializeField]
-    private float maxSpeed = 50f;
-    [SerializeField]
-    private float maxRotationSpeed = 50f;
+    //[SerializeField]
+    private float maxSpeed = 10f;
+    //[SerializeField]
+    private float maxRotationSpeed = 10f;
     //[SerializeField]
     private float drag = 0.023f;
     //[SerializeField]
@@ -36,6 +36,11 @@ public class VesselMovementBehaviour : MonoBehaviour
     private float standardDrag = 0.023f;
     [SerializeField]
     private float standardRotationDrag = 0.1f;
+    [SerializeField]
+    private float standardMaxSpeed = 10f;
+    [SerializeField]
+    private float standardMaxRotationSpeed = 10f;
+
 
     [SerializeField]
     private float maxDamageDrag = 0.05f;
@@ -47,6 +52,8 @@ public class VesselMovementBehaviour : MonoBehaviour
     {
         drag = standardDrag;
         rotationDrag = standardRotationDrag;
+        maxSpeed = standardMaxSpeed;
+        maxRotationSpeed = standardMaxRotationSpeed;
     }
 
 
@@ -161,6 +168,13 @@ public class VesselMovementBehaviour : MonoBehaviour
         float modifier = damage / maxHealth;
 
         drag = standardDrag + maxDamageDrag * modifier;
+
+        rotationDrag = standardRotationDrag + maxDamageRotationDrag * modifier;
+
+        maxSpeed = standardMaxSpeed - standardMaxSpeed * modifier;
+
+        maxRotationSpeed = standardMaxRotationSpeed - standardMaxRotationSpeed * modifier;
+
 
 
     }
