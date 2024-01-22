@@ -44,7 +44,7 @@ public class ControlsUIBehaviour : MonoBehaviour
         // 1 = max speed
         float normalisedLeverValue = (leverValue + 1) / 2;
 
-        Debug.Log(leverValue);
+        // Debug.Log(leverValue);
 
         // there are 4 levels
 
