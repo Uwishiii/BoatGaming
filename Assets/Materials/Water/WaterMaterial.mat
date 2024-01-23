@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WaterMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: eb26e2a5c96359d44a6d2a1315c564df,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: eb26e2a5c96359d44a6d2a1315c564df, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -60,7 +59,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Depth: 0.1
-    - _Displacement: 0.5
+    - _Displacement: 1.16
     - _NormalStrength: 0.307
     - _QueueControl: 0
     - _QueueOffset: 0
