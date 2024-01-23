@@ -31,6 +31,15 @@ public class IcebergDamage : MonoBehaviour
     private Sprite boatIconDamaged;
     [SerializeField]
     private Sprite boatIconNormal;
+
+    [SerializeField]
+    private int maxRepairCount = 3;
+    private int repairCount = 0;
+    [SerializeField]
+    private float repairCooldown = 20f;
+    private float repairTimer = 0f;
+    private float timePerHealth = 1f;
+
     #endregion
 
 
@@ -76,11 +85,13 @@ public class IcebergDamage : MonoBehaviour
         }
     }
 
-    public void Repair()
-    {
-        health = maxHealth;
-        healthUI.GetComponent<Slider>().value = health;
-    }
+
+    // Dylan W's Code
+    //public void Repair()
+    //{
+    //    health = maxHealth;
+    //    healthUI.GetComponent<Slider>().value = health;
+    //}
     
     #region Dylan T.'s Addition
 
@@ -90,6 +101,20 @@ public class IcebergDamage : MonoBehaviour
     {
         onHealthChange.Invoke(health, maxHealth);
         
+    }
+    public void Repair()
+    {
+        if (repairCount < maxRepairCount)
+        {
+            repairTimer += Time.deltaTime;
+            if (repairTimer >= repairCooldown)
+            {
+                repairTimer = 0f;
+                repairCount++;
+                health += 1;
+                healthUI.GetComponent<Slider>().value = health;
+            }
+        }
     }
     #endregion
 
@@ -122,4 +147,6 @@ public class IcebergDamage : MonoBehaviour
                 break;
         }
     }
+
+
 }
