@@ -41,11 +41,14 @@ public class VesselMovementBehaviour : MonoBehaviour
     [SerializeField]
     private float standardMaxRotationSpeed = 10f;
 
+    [SerializeField]
+    private float maxReverseSpeed = -1f;
 
     [SerializeField]
     private float maxDamageDrag = 0.05f;
     [SerializeField]
     private float maxDamageRotationDrag = 0.5f;
+
 
 
     private void Awake()
@@ -73,7 +76,7 @@ public class VesselMovementBehaviour : MonoBehaviour
     void Accelerate(float wantedSpeed)
     {
 
-        float speedGoal = Mathf.Clamp(wantedSpeed, 0, maxSpeed);
+        float speedGoal = Mathf.Clamp(wantedSpeed, maxReverseSpeed, maxSpeed);
 
         if (speedGoal > speed)
         {
@@ -81,6 +84,12 @@ public class VesselMovementBehaviour : MonoBehaviour
             speed += accelerationSpeed * Time.fixedDeltaTime;
 
             speed = Mathf.Clamp(speed, 0, speedGoal);
+        }
+        else if (speedGoal < speed)
+        {
+            speed -= accelerationSpeed * Time.fixedDeltaTime;
+
+            speed = Mathf.Clamp(speed, speedGoal, maxSpeed);
         }
 
         transform.Translate(transform.right * speed * Time.fixedDeltaTime, Space.World);
@@ -111,8 +120,7 @@ public class VesselMovementBehaviour : MonoBehaviour
 
     void ApplyDrag()
     {
-        speed -= drag;
-        speed = Mathf.Clamp(speed, 0, maxSpeed);
+
 
         if (rotationSpeed > 0)
         {
@@ -125,6 +133,16 @@ public class VesselMovementBehaviour : MonoBehaviour
             rotationSpeed = Mathf.Clamp(rotationSpeed, -maxRotationSpeed, 0);
         }
 
+        if (speed > 0)
+        {
+            speed -= drag;
+            speed = Mathf.Clamp(speed, 0, maxSpeed);
+        }
+        //else if (speed < 0)
+        //{
+        //    speed += drag;
+        //    speed = Mathf.Clamp(speed, -maxReverseSpeed, 0);
+        //}
 
     }
 
