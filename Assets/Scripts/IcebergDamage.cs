@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 //using Slider = UnityEngine.UI.Slider;
 using UnityEngine.Events;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class IcebergDamage : MonoBehaviour
 {
@@ -15,11 +17,11 @@ public class IcebergDamage : MonoBehaviour
     [SerializeField] 
     private int damage;
     [SerializeField] 
-    private int healthSpeed;
-    [SerializeField] 
     private GameObject healthUI;
     [SerializeField]
     private UnityEvent<float, float> onHealthChange;
+
+    private int damageTaken;
 
 
     #region Dylan T.'s Addition
@@ -36,18 +38,15 @@ public class IcebergDamage : MonoBehaviour
     {
         healthUI.GetComponent<Slider>().value = maxHealth;
         health = maxHealth;
+        damageTaken = 0;
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(int _damage)
     {
-        health -= damage;
-
-        //if (health <= 0f)
-        //{
-        //    Destroy(gameObject);
-        //    Debug.Log("ded");
-        //}
-
+        health -= _damage;
+        damageTaken += _damage;
+        onHealthChange.Invoke(health, maxHealth);
+        healthUI.GetComponent<Slider>().value = health;
 
         #region Dylan T.'s Addition
         // If the health is less than max health, change the boat icon to the damaged one.
@@ -60,18 +59,20 @@ public class IcebergDamage : MonoBehaviour
             boatIcon.sprite = boatIconNormal;
         }
         #endregion
-
-
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        //This is for Damage Calcs
         if (collision.gameObject.CompareTag("DamageBoat"))
         {
             TakeDamage(damage);
-            // Dylan T.'s suggestion: Refactor this to a method or move it to the TakeDamage method.
-            onHealthChange.Invoke(health, maxHealth);
-            healthUI.GetComponent<Slider>().value = health;
+        }
+        
+        //This is for detecting the finish line
+        if (collision.gameObject.CompareTag("FinishLine"))
+        {
+            ScoreCalc();
         }
     }
 
@@ -80,6 +81,7 @@ public class IcebergDamage : MonoBehaviour
         health = maxHealth;
         healthUI.GetComponent<Slider>().value = health;
     }
+    
     #region Dylan T.'s Addition
 
     // This is a Unity event that is called when the script is loaded or a value is changed in the inspector.
@@ -91,4 +93,33 @@ public class IcebergDamage : MonoBehaviour
     }
     #endregion
 
+    private void ScoreCalc()
+    {
+        switch (damageTaken)
+        {
+            case 0:
+                Debug.Log("S"); 
+                break;
+            
+            case > 0 and <= 12:
+                Debug.Log("A");
+                break;
+            
+            case > 12 and <= 24:
+                Debug.Log("B");
+                break;
+            
+            case > 24 and <= 36:
+                Debug.Log("C");
+                break;
+            
+            case > 36 and <= 48:
+                Debug.Log("D");
+                break;
+            
+            case > 48:
+                Debug.Log("F");
+                break;
+        }
+    }
 }
