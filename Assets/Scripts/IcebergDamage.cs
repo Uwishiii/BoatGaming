@@ -42,6 +42,9 @@ public class IcebergDamage : MonoBehaviour
     private float timePerHealth = 0.2f;
     private bool repairing = false;
 
+    private int healthRepaired = 0;
+    private float toRepair = 0f;
+
     #endregion
 
 
@@ -95,10 +98,14 @@ public class IcebergDamage : MonoBehaviour
     //}
 
     #region Dylan T.'s Addition
+
+
     private void FixedUpdate()
     {
-        RepairUpdate();
+        RepairUpdate(toRepair);
+
     }
+
     // This is a Unity event that is called when the script is loaded or a value is changed in the inspector.
     // This allows me to see the effects of the health on the speed.
     private void OnValidate()
@@ -115,12 +122,12 @@ public class IcebergDamage : MonoBehaviour
         if (repairCount < maxRepairCount)
         {
             
-            repairTimer += Time.deltaTime;
             if (repairTimer >= repairCooldown)
             {
                 repairing = true;
                 repairTimer = 0f;
                 repairCount++;
+                toRepair = maxHealth - health;
                 //health += 1;
                 //healthUI.GetComponent<Slider>().value = health;
                 Debug.Log("Repairing");
@@ -128,7 +135,7 @@ public class IcebergDamage : MonoBehaviour
         }
     }
 
-    public void RepairUpdate()
+    public void RepairUpdate(float toRepair)
     {
         if (repairing)
         {
@@ -139,12 +146,25 @@ public class IcebergDamage : MonoBehaviour
                 health += 1;
                 healthUI.GetComponent<Slider>().value = health;
                 Debug.Log("Repairing");
-                if (health >= maxHealth)
+                Debug.Log($"Health: {health}, Max Health: {maxHealth}, To Repair: {toRepair}, Health Repaired: {healthRepaired}");
+                healthRepaired++;
+                onHealthChange.Invoke(health, maxHealth);
+
+                if (healthRepaired >= toRepair)
                 {
+                    if (health >= maxHealth)
                     boatIcon.sprite = boatIconNormal;
+
                     repairing = false;
+                    healthRepaired = 0;
+
                 }
             }
+        }
+        else if (repairCount < maxRepairCount)
+        {
+            repairTimer += Time.deltaTime;
+
         }
     }
 
