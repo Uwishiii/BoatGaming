@@ -50,6 +50,10 @@ public class IcebergDamage : MonoBehaviour
 
     #endregion
 
+    #region Andrei's Addition
+    [SerializeField]
+    private GameObject damageIcon;
+    #endregion
 
     void Start()
     {
@@ -70,7 +74,8 @@ public class IcebergDamage : MonoBehaviour
         // If the health is less than max health, change the boat icon to the damaged one.
         if (health < maxHealth)
         {
-            boatIcon.sprite = boatIconDamaged;
+            //   boatIcon.sprite = boatIconDamaged;
+            damageIcon.SetActive(true);
         }
         #endregion
     }
@@ -156,7 +161,8 @@ public class IcebergDamage : MonoBehaviour
                 if (healthRepaired >= toRepair)
                 {
                     if (health >= maxHealth)
-                    boatIcon.sprite = boatIconNormal;
+                        damageIcon.SetActive(false);
+                    // boatIcon.sprite = boatIconNormal;
 
                     repairing = false;
                     healthRepaired = 0;
