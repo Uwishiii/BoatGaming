@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-//using Slider = UnityEngine.UI.Slider;
 using UnityEngine.Events;
-using UnityEngine.SocialPlatforms.Impl;
+
 
 public class IcebergDamage : MonoBehaviour
 {
@@ -36,7 +34,9 @@ public class IcebergDamage : MonoBehaviour
     private int maxRepairCount = 3;
     private int repairCount = 0;
     [SerializeField]
-    private float repairCooldown = 20f;
+    private int repairCooldown = 20;
+    private float repairCooldownTimer = 20f;
+
     private float repairTimer = 0f;
     [SerializeField]
     private float timePerHealth = 0.2f;
@@ -45,12 +45,15 @@ public class IcebergDamage : MonoBehaviour
     private int healthRepaired = 0;
     private float toRepair = 0f;
 
+    public float RepairCooldown { get => repairCooldownTimer; }
+    public int RepairCount { get => repairCount; }
+
     #endregion
 
 
     void Start()
     {
-        repairTimer = repairCooldown;
+        repairCooldownTimer = repairCooldown;
         healthUI.GetComponent<Slider>().value = maxHealth;
         health = maxHealth;
         damageTaken = 0;
@@ -122,10 +125,10 @@ public class IcebergDamage : MonoBehaviour
         if (repairCount < maxRepairCount)
         {
             
-            if (repairTimer >= repairCooldown)
+            if (repairCooldownTimer >= repairCooldown)
             {
                 repairing = true;
-                repairTimer = 0f;
+                repairCooldownTimer = 0f;
                 repairCount++;
                 toRepair = maxHealth - health;
                 //health += 1;
@@ -139,7 +142,7 @@ public class IcebergDamage : MonoBehaviour
     {
         if (repairing)
         {
-            repairTimer += Time.deltaTime;
+            repairCooldownTimer += Time.deltaTime;
             if (repairTimer >= timePerHealth)
             {
                 repairTimer = 0f;
@@ -159,11 +162,15 @@ public class IcebergDamage : MonoBehaviour
                     healthRepaired = 0;
 
                 }
+                else
+                {
+                    repairTimer += Time.deltaTime;
+                }
             }
         }
         else if (repairCount < maxRepairCount)
         {
-            repairTimer += Time.deltaTime;
+            repairCooldownTimer += Time.deltaTime;
 
         }
     }
