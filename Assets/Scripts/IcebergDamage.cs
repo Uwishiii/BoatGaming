@@ -23,19 +23,21 @@ public class IcebergDamage : MonoBehaviour
 
 
     #region Dylan T.'s Addition
-    [SerializeField]
-    private Image boatIcon;
-    [SerializeField]
-    private Sprite boatIconDamaged;
-    [SerializeField]
-    private Sprite boatIconNormal;
+    //[SerializeField]
+    //private Image boatIcon;
+    //[SerializeField]
+    //private Sprite boatIconDamaged;
+    //[SerializeField]
+    //private Sprite boatIconNormal;
 
-    [SerializeField]
-    private int maxRepairCount = 3;
-    private int repairCount = 0;
+    //[SerializeField]
+    //private int maxRepairCount = 3;
+    //private int repairCount = 0;
     [SerializeField]
     private int repairCooldown = 20;
     private float repairCooldownTimer = 20f;
+
+    
 
     private float repairTimer = 0f;
     [SerializeField]
@@ -46,7 +48,7 @@ public class IcebergDamage : MonoBehaviour
     private float toRepair = 0f;
 
     public float RepairCooldown { get => repairCooldownTimer; }
-    public int RepairCount { get => repairCount; }
+    //public int RepairCount { get => repairCount; }
 
     #endregion
 
@@ -132,34 +134,33 @@ public class IcebergDamage : MonoBehaviour
             return;
 
 
-        if (repairCount < maxRepairCount)
-        {
+        //if (repairCount < maxRepairCount)
+        //{
             
-            if (repairCooldownTimer >= repairCooldown)
+            if (repairCooldownTimer <= 0)
             {
                 repairing = true;
-                repairCooldownTimer = 0f;
-                repairCount++;
+                repairCooldownTimer = repairCooldown;
+                //repairCount++;
                 toRepair = maxHealth - health;
                 //health += 1;
                 //healthUI.GetComponent<Slider>().value = health;
-                Debug.Log("Repairing");
+                
             }
-        }
+        //}
     }
 
     public void RepairUpdate(float toRepair)
     {
         if (repairing)
         {
-            repairCooldownTimer += Time.deltaTime;
+            repairTimer += Time.deltaTime;
             if (repairTimer >= timePerHealth)
             {
                 repairTimer = 0f;
                 health += 1;
                 healthUI.GetComponent<Slider>().value = health;
-                Debug.Log("Repairing");
-                Debug.Log($"Health: {health}, Max Health: {maxHealth}, To Repair: {toRepair}, Health Repaired: {healthRepaired}");
+
                 healthRepaired++;
                 onHealthChange.Invoke(health, maxHealth);
 
@@ -186,11 +187,13 @@ public class IcebergDamage : MonoBehaviour
                 }
             }
         }
-        else if (repairCount < maxRepairCount)
-        {
-            repairCooldownTimer += Time.deltaTime;
 
+        else if (repairCooldownTimer > 0)
+        {
+            repairCooldownTimer -= Time.deltaTime;
+            repairCooldownTimer = Mathf.Clamp(repairCooldownTimer, 0, repairCooldown);
         }
+
     }
 
     #endregion

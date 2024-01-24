@@ -19,11 +19,21 @@ public class ControlsUIBehaviour : MonoBehaviour
     [SerializeField]
     private Material speedLevel04Material;
 
+    [SerializeField]
+    private TMP_Text repairCooldownText;
+    [SerializeField]
+    private IcebergDamage icebergDamage;
+
     // I can probably make this a lot more efficient and neater
     void Start()
     {
         // Set all colours to off
         UpdateSpeedLevel(-1f);
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateRepairCooldown(icebergDamage.RepairCooldown);
     }
 
     public void CalculateSpeed(float speed)
@@ -77,6 +87,16 @@ public class ControlsUIBehaviour : MonoBehaviour
                 speedLevel04Material.DisableKeyword("_EMISSION");
                 break;
         }
+    }
+
+
+    public void UpdateRepairCooldown(float cooldown)
+    {
+        if (cooldown <= 0f) {
+            repairCooldownText.text = "Ready";
+            return;
+        }
+        repairCooldownText.text = cooldown.ToString("F0");
     }
 
     private void OnDisable()
