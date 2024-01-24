@@ -159,8 +159,31 @@ public class VesselMovementBehaviour : MonoBehaviour
         // 0 = no speed
         // 1 = max speed
 
-        handleValue = (handleValue + 1) / 2;
-        wantedSpeed = handleValue * maxSpeed;
+
+
+       float normalisedHandleValue = (handleValue + 1) / 2;
+
+        if (normalisedHandleValue >= 0.25)
+        {
+            Debug.Log("Normalised Handle Value is greater than 0.25");
+            float modifier = (normalisedHandleValue - 0.25f) / 0.75f;
+            Debug.Log($"Modifier: {modifier}");
+            wantedSpeed = modifier * maxSpeed;
+            Debug.Log($"Wanted Speed: {wantedSpeed}");
+            Debug.Log($"Max Speed: {maxSpeed}");
+        }
+        else if (normalisedHandleValue > 0.10 && normalisedHandleValue < 0.25)
+        {
+            Debug.Log($"Normalised Handle Value is between 0.10 and 0.25");
+            wantedSpeed = 0;
+        }
+        else
+        {
+            Debug.Log("Normalised Handle Value is less than 0.10");
+            wantedSpeed = maxReverseSpeed;
+        }
+
+        //wantedSpeed = handleValue * maxSpeed;
 
     }
 

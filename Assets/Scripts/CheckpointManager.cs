@@ -35,6 +35,10 @@ public class CheckpointManager : MonoBehaviour
     private Quaternion GetAngle()
     {
         Checkpoint checkpoint = GetFirstUnreachedCheckpoint();
+        if (checkpoint == null)
+        {
+            return Quaternion.identity;
+        }
 
        // Funny math stuff to get the angle between the player and the checkpoint and rotate the compass arrow
         Vector3 relativeCheckpointLocation = transform.InverseTransformPoint(checkpoint.transform.position);
