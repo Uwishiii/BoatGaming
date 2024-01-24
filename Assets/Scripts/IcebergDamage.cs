@@ -10,11 +10,11 @@ public class IcebergDamage : MonoBehaviour
 {
     [SerializeField]
     private float maxHealth;
-    [SerializeField] 
+    [SerializeField]
     private float health;
-    [SerializeField] 
+    [SerializeField]
     private int damage;
-    [SerializeField] 
+    [SerializeField]
     private GameObject healthUI;
     [SerializeField]
     private UnityEvent<float, float> onHealthChange;
@@ -37,7 +37,7 @@ public class IcebergDamage : MonoBehaviour
     private int repairCooldown = 20;
     private float repairCooldownTimer = 20f;
 
-    
+
 
     private float repairTimer = 0f;
     [SerializeField]
@@ -69,7 +69,20 @@ public class IcebergDamage : MonoBehaviour
 
     private void TakeDamage(int _damage)
     {
+        #region Dylan T.'s Additions
+        if (health <= 0)
+            return;
+
+
+        // Original code
         health -= _damage;
+
+
+
+        health = Mathf.Clamp(health, 0, maxHealth);
+        #endregion
+
+
         damageTaken += _damage;
         onHealthChange.Invoke(health, maxHealth);
         healthUI.GetComponent<Slider>().value = health;
@@ -94,7 +107,7 @@ public class IcebergDamage : MonoBehaviour
         {
             TakeDamage(damage);
         }
-        
+
         //This is for detecting the finish line
         if (collision.gameObject.CompareTag("FinishLine"))
         {
@@ -126,7 +139,7 @@ public class IcebergDamage : MonoBehaviour
     private void OnValidate()
     {
         onHealthChange.Invoke(health, maxHealth);
-        
+
     }
     public void Repair()
     {
@@ -136,17 +149,17 @@ public class IcebergDamage : MonoBehaviour
 
         //if (repairCount < maxRepairCount)
         //{
-            
-            if (repairCooldownTimer <= 0)
-            {
-                repairing = true;
-                repairCooldownTimer = repairCooldown;
-                //repairCount++;
-                toRepair = maxHealth - health;
-                //health += 1;
-                //healthUI.GetComponent<Slider>().value = health;
-                
-            }
+
+        if (repairCooldownTimer <= 0)
+        {
+            repairing = true;
+            repairCooldownTimer = repairCooldown;
+            //repairCount++;
+            toRepair = maxHealth - health;
+            //health += 1;
+            //healthUI.GetComponent<Slider>().value = health;
+
+        }
         //}
     }
 
@@ -205,25 +218,25 @@ public class IcebergDamage : MonoBehaviour
         switch (damageTaken)
         {
             case 0:
-                Debug.Log("S"); 
+                Debug.Log("S");
                 break;
-            
+
             case > 0 and <= 12:
                 Debug.Log("A");
                 break;
-            
+
             case > 12 and <= 24:
                 Debug.Log("B");
                 break;
-            
+
             case > 24 and <= 36:
                 Debug.Log("C");
                 break;
-            
+
             case > 36 and <= 48:
                 Debug.Log("D");
                 break;
-            
+
             case > 48:
                 Debug.Log("F");
                 break;

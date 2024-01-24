@@ -69,7 +69,7 @@ public class VesselMovementBehaviour : MonoBehaviour
 
         Accelerate(wantedSpeed);
         Rotate(wantedRotationSpeed);
-        
+
     }
 
 
@@ -161,7 +161,7 @@ public class VesselMovementBehaviour : MonoBehaviour
 
 
 
-       float normalisedHandleValue = (handleValue + 1) / 2;
+        float normalisedHandleValue = (handleValue + 1) / 2;
 
         if (normalisedHandleValue >= 0.25)
         {
@@ -208,13 +208,17 @@ public class VesselMovementBehaviour : MonoBehaviour
 
         float modifier = damage / maxHealth;
 
-        drag = standardDrag + maxDamageDrag * modifier;
-
-        rotationDrag = standardRotationDrag + maxDamageRotationDrag * modifier;
 
         maxSpeed = standardMaxSpeed - standardMaxSpeed * modifier;
 
         maxRotationSpeed = standardMaxRotationSpeed - standardMaxRotationSpeed * modifier;
+
+
+        drag = standardDrag + maxDamageDrag * modifier;
+
+        rotationDrag = standardRotationDrag + maxDamageRotationDrag * modifier;
+
+
 
 
 
