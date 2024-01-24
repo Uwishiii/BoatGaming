@@ -77,8 +77,10 @@ public class IcebergDamage : MonoBehaviour
         if (health < maxHealth)
         {
             //   boatIcon.sprite = boatIconDamaged;
+            #region Andrei's Changes
             damageIcon.SetActive(true);
             buttonMaterial.EnableKeyword("_EMISSION");
+            #endregion
         }
         #endregion
     }
@@ -172,8 +174,10 @@ public class IcebergDamage : MonoBehaviour
                     }
                     // boatIcon.sprite = boatIconNormal;
 
+                    #region Andrei's Changes
                     repairing = false;
                     healthRepaired = 0;
+                    #endregion
 
                 }
                 else
