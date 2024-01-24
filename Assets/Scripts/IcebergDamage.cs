@@ -53,6 +53,8 @@ public class IcebergDamage : MonoBehaviour
     #region Andrei's Addition
     [SerializeField]
     private GameObject damageIcon;
+    [SerializeField]
+    private Material buttonMaterial;
     #endregion
 
     void Start()
@@ -76,6 +78,7 @@ public class IcebergDamage : MonoBehaviour
         {
             //   boatIcon.sprite = boatIconDamaged;
             damageIcon.SetActive(true);
+            buttonMaterial.EnableKeyword("_EMISSION");
         }
         #endregion
     }
@@ -161,7 +164,12 @@ public class IcebergDamage : MonoBehaviour
                 if (healthRepaired >= toRepair)
                 {
                     if (health >= maxHealth)
+                    {
                         damageIcon.SetActive(false);
+                        buttonMaterial.DisableKeyword("_EMISSION");
+
+
+                    }
                     // boatIcon.sprite = boatIconNormal;
 
                     repairing = false;
