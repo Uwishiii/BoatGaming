@@ -38,13 +38,16 @@ public class IcebergDamage : MonoBehaviour
     [SerializeField]
     private float repairCooldown = 20f;
     private float repairTimer = 0f;
-    private float timePerHealth = 1f;
+    [SerializeField]
+    private float timePerHealth = 0.2f;
+    private bool repairing = false;
 
     #endregion
 
 
     void Start()
     {
+        repairTimer = repairCooldown;
         healthUI.GetComponent<Slider>().value = maxHealth;
         health = maxHealth;
         damageTaken = 0;
@@ -62,10 +65,6 @@ public class IcebergDamage : MonoBehaviour
         if (health < maxHealth)
         {
             boatIcon.sprite = boatIconDamaged;
-        }
-        else
-        {
-            boatIcon.sprite = boatIconNormal;
         }
         #endregion
     }
@@ -86,15 +85,20 @@ public class IcebergDamage : MonoBehaviour
     }
 
 
+
+
     // Dylan W's Code
     //public void Repair()
     //{
     //    health = maxHealth;
     //    healthUI.GetComponent<Slider>().value = health;
     //}
-    
-    #region Dylan T.'s Addition
 
+    #region Dylan T.'s Addition
+    private void FixedUpdate()
+    {
+        RepairUpdate();
+    }
     // This is a Unity event that is called when the script is loaded or a value is changed in the inspector.
     // This allows me to see the effects of the health on the speed.
     private void OnValidate()
@@ -104,19 +108,49 @@ public class IcebergDamage : MonoBehaviour
     }
     public void Repair()
     {
+        if (repairing)
+            return;
+
+
         if (repairCount < maxRepairCount)
         {
+            
             repairTimer += Time.deltaTime;
             if (repairTimer >= repairCooldown)
             {
+                repairing = true;
                 repairTimer = 0f;
                 repairCount++;
-                health += 1;
-                healthUI.GetComponent<Slider>().value = health;
+                //health += 1;
+                //healthUI.GetComponent<Slider>().value = health;
+                Debug.Log("Repairing");
             }
         }
     }
+
+    public void RepairUpdate()
+    {
+        if (repairing)
+        {
+            repairTimer += Time.deltaTime;
+            if (repairTimer >= timePerHealth)
+            {
+                repairTimer = 0f;
+                health += 1;
+                healthUI.GetComponent<Slider>().value = health;
+                Debug.Log("Repairing");
+                if (health >= maxHealth)
+                {
+                    boatIcon.sprite = boatIconNormal;
+                    repairing = false;
+                }
+            }
+        }
+    }
+
     #endregion
+
+
 
     private void ScoreCalc()
     {
