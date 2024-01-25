@@ -55,6 +55,7 @@ public class IcebergDamage : MonoBehaviour
     private GameObject finishUI;
     [SerializeField]
     private TMP_Text finishText;
+    private bool isFinished = false;
 
 
     #endregion
@@ -78,6 +79,9 @@ public class IcebergDamage : MonoBehaviour
     {
         #region Dylan T.'s Additions
         if (health <= 0)
+            return;
+
+        if (isFinished)
             return;
 
 
@@ -222,6 +226,11 @@ public class IcebergDamage : MonoBehaviour
 
     private void ScoreCalc()
     {
+        if (isFinished)
+            return;
+
+
+        isFinished = true;
         string score = "";
         switch (damageTaken)
         {

@@ -37,6 +37,7 @@ public class CheckpointManager : MonoBehaviour
         Checkpoint checkpoint = GetFirstUnreachedCheckpoint();
         if (checkpoint == null)
         {
+            //Debug.Log("No Checkpoint Found");
             return Quaternion.identity;
         }
 
@@ -49,6 +50,7 @@ public class CheckpointManager : MonoBehaviour
 
     private void SmoothRotate(Quaternion angle)
     {
+        //Debug.Log(angle);
         compassArrow.transform.localRotation = Quaternion.Slerp(compassArrow.transform.localRotation, angle, Time.deltaTime * 2);
 
 
