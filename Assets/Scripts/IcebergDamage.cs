@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 
 public class IcebergDamage : MonoBehaviour
@@ -49,6 +50,12 @@ public class IcebergDamage : MonoBehaviour
 
     public float RepairCooldown { get => repairCooldownTimer; }
     //public int RepairCount { get => repairCount; }
+
+    [SerializeField]
+    private GameObject finishUI;
+    [SerializeField]
+    private TMP_Text finishText;
+
 
     #endregion
 
@@ -215,33 +222,46 @@ public class IcebergDamage : MonoBehaviour
 
     private void ScoreCalc()
     {
+        string score = "";
         switch (damageTaken)
         {
             case 0:
                 Debug.Log("S");
+                score = "S";
                 break;
 
             case > 0 and <= 12:
                 Debug.Log("A");
+                score = "A";
                 break;
 
             case > 12 and <= 24:
                 Debug.Log("B");
+                score = "B";
                 break;
 
             case > 24 and <= 36:
                 Debug.Log("C");
+                score = "C";
                 break;
 
             case > 36 and <= 48:
                 Debug.Log("D");
+                score = "D";
                 break;
 
             case > 48:
                 Debug.Log("F");
+                score = "F";
                 break;
         }
+        finishUI.SetActive(true);
+        finishText.text = score;
     }
+
+
+  
+    
 
 
 }
